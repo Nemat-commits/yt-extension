@@ -20,18 +20,26 @@
   html[data-rf-enabled="true"][data-rf-theme="midnight"] body,
   html[data-rf-enabled="true"][data-rf-theme="midnight"] ytd-app {
     background-color: #0a0c10 !important;
+    background-image: radial-gradient(ellipse at 14% 0%, rgba(102, 117, 183, 0.075), transparent 38rem) !important;
   }
 
-  html[data-rf-enabled="true"][data-rf-theme="midnight"] #masthead-container,
+  html[data-rf-enabled="true"][data-rf-theme="midnight"] #masthead-container {
+    background-color: rgba(10, 12, 18, 0.82) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.075) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    backdrop-filter: blur(18px) saturate(135%);
+  }
+
   html[data-rf-enabled="true"][data-rf-theme="midnight"] ytd-mini-guide-renderer,
   html[data-rf-enabled="true"][data-rf-theme="midnight"] ytd-guide-renderer {
-    background-color: #0a0c10 !important;
+    background-color: rgba(10, 12, 18, 0.9) !important;
   }
 
   html[data-rf-enabled="true"] ytd-rich-item-renderer,
   html[data-rf-enabled="true"] ytd-video-renderer,
   html[data-rf-enabled="true"] ytd-grid-video-renderer {
     border-radius: 14px;
+    transition: background-color 160ms ease, box-shadow 160ms ease;
   }
 
   html[data-rf-enabled="true"] a:focus-visible,

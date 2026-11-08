@@ -51,11 +51,17 @@
 </section>
 
 <style>
-  .rail { padding-block: 22px 8px; }
-  .rail-heading { display: flex; align-items: baseline; gap: 12px; margin-block-end: 13px; }
-  h2 { margin: 0; color: var(--rf-text); font-size: 17px; letter-spacing: -.025em; }
-  .rail-heading span, .empty { color: var(--rf-muted); font-size: 11px; }
-  .cards { display: flex; gap: 15px; overflow-x: auto; padding: 2px 2px 15px; scroll-snap-type: x proximity; scrollbar-color: #424b59 transparent; scrollbar-width: thin; }
+  .rail { min-width: 0; padding-block: 10px 3px; }
+  .rail-heading { display: flex; align-items: center; gap: 10px; margin-block-end: 13px; }
+  h2 { display: inline-flex; align-items: center; gap: 9px; margin: 0; color: var(--rf-text); font-size: 18px; letter-spacing: -.04em; }
+  h2::before { width: 4px; height: 21px; border-radius: 99px; content: ""; background: linear-gradient(180deg,var(--rf-accent-bright,var(--rf-accent)),rgba(255,118,95,.35)); box-shadow: 0 0 15px rgba(255,118,95,.26); }
+  .rail-heading span { display: inline-flex; align-items: center; min-height: 22px; padding: 3px 8px; border: 1px solid rgba(255,255,255,.09); border-radius: 999px; color: var(--rf-faint); background: rgba(255,255,255,.035); font-size: 8px; font-weight: 700; }
+  .cards { display: flex; gap: 12px; overflow-x: auto; padding: 3px 2px 17px; scroll-snap-type: x proximity; scrollbar-color: rgba(183,194,213,.32) transparent; scrollbar-width: thin; }
+  .cards::-webkit-scrollbar { height: 5px; }
+  .cards::-webkit-scrollbar-track { background: transparent; }
+  .cards::-webkit-scrollbar-thumb { border-radius: 99px; background: rgba(183,194,213,.28); }
+  .cards::-webkit-scrollbar-thumb:hover { background: rgba(183,194,213,.48); }
   .cards :global(.card) { scroll-snap-align: start; }
-  .empty { margin: 0; padding: 12px 0; }
+  .empty { margin: 0; padding: 17px 19px; border: 1px dashed rgba(255,255,255,.14); border-radius: 15px; color: var(--rf-muted); background: rgba(255,255,255,.025); font-size: 10px; }
+
 </style>
