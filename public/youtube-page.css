@@ -44,7 +44,7 @@
 
 @layer rf.features {
   /* Hide only the active native Home browse instance. Cached subscriptions/channel views stay intact. */
-  html[data-rf-enabled="true"][data-rf-route="home"][data-rf-home-mode="dashboard"]:not([data-rf-viewport="compact"])
+  html[data-rf-enabled="true"][data-rf-route="home"][data-rf-home-mode="dashboard"][data-rf-home-ready="true"]:not([data-rf-viewport="compact"])
     ytd-browse[page-subtype="home"] {
     display: none !important;
   }

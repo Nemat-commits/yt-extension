@@ -77,10 +77,15 @@ export function applyRuntimeAttributes(
   if (enabled) root.dataset.rfEnabled = 'true';
   else delete root.dataset.rfEnabled;
 
-  if (enabled && route.kind === 'home' && preferences.home.destination === 'dashboard' && !compact && !config.killSwitches.homeDashboard) {
-    root.dataset.rfHomeMode = 'dashboard';
-  } else {
+  const homeDashboardEnabled = enabled
+    && route.kind === 'home'
+    && preferences.home.destination === 'dashboard'
+    && !compact
+    && !config.killSwitches.homeDashboard;
+  if (homeDashboardEnabled) root.dataset.rfHomeMode = 'dashboard';
+  else {
     delete root.dataset.rfHomeMode;
+    delete root.dataset.rfHomeReady;
   }
 
   if (enabled && route.kind === 'watch' && preferences.watch.focusMode && !config.killSwitches.watchControls) root.dataset.rfFocus = 'true';

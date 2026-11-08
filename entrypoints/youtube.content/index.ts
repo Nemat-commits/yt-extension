@@ -1,6 +1,7 @@
 import './ui.css';
 import { browser } from 'wxt/browser';
 import { createShadowRootUi } from 'wxt/utils/content-script-ui/shadow-root';
+import { mount, unmount } from 'svelte';
 import { writable } from 'svelte/store';
 import App from './App.svelte';
 import { SELECTORS, firstMatch } from '@src/adapters/selector-registry';
@@ -14,7 +15,7 @@ import { makeVideoMeta } from '@src/data/validation';
 import { DEFAULT_DEVICE_CONFIG, DEFAULT_PREFERENCES, EMPTY_FEATURE_HEALTH, type AppRoute, type DeviceConfig, type ExtensionState } from '@src/data/models';
 import type { ContentActions, ContentState } from '@src/ui/types';
 
-type MountedApp = { $destroy(): void };
+type MountedApp = ReturnType<typeof mount>;
 type ContentUi = { shadowHost: HTMLElement; mount(): void; remove(): void; mounted: MountedApp | undefined };
 
 export default defineContentScript({
@@ -246,10 +247,16 @@ export default defineContentScript({
           const mountPoint = document.createElement('div');
           mountPoint.id = 'rf-app-mount';
           container.append(mountPoint);
-          return new App({ target: mountPoint, props: { appState: contentState, actions } });
+          const instance = mount(App, { target: mountPoint, props: { appState: contentState, actions } });
+          // Only suppress YouTube's native Home after Reframe rendered successfully.
+          if (route.kind === 'home' && document.documentElement.dataset.rfHomeMode === 'dashboard') {
+            document.documentElement.dataset.rfHomeReady = 'true';
+          }
+          return instance;
         },
         onRemove(instance: MountedApp | undefined) {
-          instance?.$destroy();
+          delete document.documentElement.dataset.rfHomeReady;
+          if (instance) void unmount(instance);
         },
       });
       ui = created;
@@ -264,7 +271,7 @@ export default defineContentScript({
           uiPending = false;
           const expectedRoute = route;
           if (!wantsUi(expectedRoute)) {
-            if (ui?.shadowHost.isConnected) ui.remove();
+            ui?.remove();
             mountedKind = '';
             continue;
           }
@@ -272,7 +279,7 @@ export default defineContentScript({
           if (disposed) break;
           if (expectedRoute !== route) { uiPending = true; continue; }
           if (!ui?.shadowHost.isConnected || mountedKind !== route.kind) {
-            if (ui?.shadowHost.isConnected) ui.remove();
+            ui?.remove();
             ui?.mount();
             mountedKind = route.kind;
           }
@@ -355,6 +362,7 @@ export default defineContentScript({
       delete document.documentElement.dataset.rfRoute;
       delete document.documentElement.dataset.rfTheme;
       delete document.documentElement.dataset.rfHomeMode;
+      delete document.documentElement.dataset.rfHomeReady;
       delete document.documentElement.dataset.rfFocus;
       delete document.documentElement.dataset.rfComments;
       delete document.documentElement.dataset.rfDescription;
