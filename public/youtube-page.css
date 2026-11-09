@@ -1,0 +1,110 @@
+/* Reframe page styles are static MV3 CSS: no remote code and no player controls are touched. */
+@layer rf.base, rf.features;
+
+@layer rf.base {
+  html[data-rf-enabled="true"][data-rf-theme="midnight"] {
+    color-scheme: dark;
+    --rf-bg: #0a0c10;
+    --rf-surface-1: #12151b;
+    --rf-surface-2: #1a1f27;
+    --rf-surface-3: #232a35;
+    --rf-border-subtle: rgba(255, 255, 255, 0.09);
+    --rf-text: #f2f4f8;
+    --rf-text-muted: #a8b0bf;
+    --rf-accent: #ff684a;
+    --rf-accent-hover: #ff8066;
+    --rf-success: #42d6c4;
+    --rf-radius-card: 16px;
+  }
+
+  html[data-rf-enabled="true"][data-rf-theme="midnight"] body,
+  html[data-rf-enabled="true"][data-rf-theme="midnight"] ytd-app {
+    background-color: #0a0c10 !important;
+    background-image: radial-gradient(ellipse at 14% 0%, rgba(102, 117, 183, 0.075), transparent 38rem) !important;
+  }
+
+  html[data-rf-enabled="true"][data-rf-theme="midnight"] #masthead-container {
+    background-color: rgba(10, 12, 18, 0.82) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.075) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    backdrop-filter: blur(18px) saturate(135%);
+  }
+
+  html[data-rf-enabled="true"][data-rf-theme="midnight"] ytd-mini-guide-renderer,
+  html[data-rf-enabled="true"][data-rf-theme="midnight"] ytd-guide-renderer {
+    background-color: rgba(10, 12, 18, 0.9) !important;
+  }
+
+  html[data-rf-enabled="true"] ytd-rich-item-renderer,
+  html[data-rf-enabled="true"] ytd-video-renderer,
+  html[data-rf-enabled="true"] ytd-grid-video-renderer {
+    border-radius: 14px;
+    transition: background-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  html[data-rf-enabled="true"] a:focus-visible,
+  html[data-rf-enabled="true"] button:focus-visible,
+  html[data-rf-enabled="true"] [tabindex]:focus-visible {
+    outline: 2px solid #ff684a !important;
+    outline-offset: 3px !important;
+  }
+}
+
+@layer rf.features {
+  /* Hide only the active native Home browse instance. Cached subscriptions/channel views stay intact. */
+  html[data-rf-enabled="true"][data-rf-route="home"][data-rf-home-mode="dashboard"][data-rf-home-ready="true"]:not([data-rf-viewport="compact"])
+    ytd-browse[page-subtype="home"] {
+    display: none !important;
+  }
+
+  /* Focus controls affect watch-page surroundings only. The native player and its ancestors are untouched. */
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-focus="true"] #secondary,
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-focus="true"] ytd-watch-flexy #comments,
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-focus="true"] ytd-merch-shelf-renderer,
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-focus="true"] ytd-ticket-shelf-renderer {
+    display: none !important;
+  }
+
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-focus="true"] #primary {
+    max-width: 1120px !important;
+    margin-inline: auto !important;
+  }
+
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-comments="collapsed"] ytd-watch-flexy #comments {
+    display: none !important;
+  }
+
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-description="collapsed"] ytd-watch-metadata #description-inner,
+  html[data-rf-enabled="true"][data-rf-route="watch"][data-rf-description="collapsed"] ytd-watch-metadata #description-inline-expander {
+    max-height: 5.5rem !important;
+    overflow: hidden !important;
+  }
+
+  /* The native subscription grid remains connected so Polymer continuation/infinite-scroll behavior works. */
+  html[data-rf-enabled="true"][data-rf-route="subscriptions"] ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #contents {
+    column-gap: 22px !important;
+    row-gap: 30px !important;
+  }
+
+  html[data-rf-enabled="true"][data-rf-route="subscriptions"] ytd-browse[page-subtype="subscriptions"] ytd-rich-item-renderer {
+    border-radius: 14px;
+  }
+
+  html[data-rf-enabled="true"][data-rf-hide-shorts="true"][data-rf-route="home"] ytd-reel-shelf-renderer,
+  html[data-rf-enabled="true"][data-rf-hide-shorts="true"][data-rf-route="subscriptions"] ytd-reel-shelf-renderer,
+  html[data-rf-enabled="true"][data-rf-hide-shorts="true"][data-rf-route="search"] ytd-reel-shelf-renderer,
+  html[data-rf-enabled="true"][data-rf-hide-shorts="true"] ytd-guide-entry-renderer a[href^="/shorts"] {
+    display: none !important;
+  }
+
+  html[data-rf-enabled="true"][data-rf-route="search"] ytd-video-renderer {
+    margin-block: 14px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Reframe never suppresses YouTube's native Home layout in narrow/split-screen viewports. */
+  html[data-rf-enabled="true"] ytd-browse[page-subtype="home"] {
+    display: revert !important;
+  }
+}
